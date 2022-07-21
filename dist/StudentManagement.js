@@ -5,35 +5,73 @@ class StudentManagement {
     constructor() {
         this.studentList = [];
     }
-    findID(id) {
+    findByGroup(group) {
+        let newStudentList = [];
         let index = -1;
         for (let i = 0; i < this.studentList.length; i++) {
-            if (this.studentList[i].id === id) {
-                index = i;
-                break;
+            if (this.studentList[i].group === group) {
+                index++;
+                newStudentList.push(this.studentList[i]);
             }
         }
-        this.conditionToShowInfo(index);
+        this.showStudentfound(newStudentList);
     }
-    conditionToShowInfo(index) {
-        if (index !== -1) {
-            console.table(this.showInfoStudent(index));
+    findByID(id) {
+        let index = -1;
+        let newStudentList = [];
+        for (let i = 0; i < this.studentList.length; i++) {
+            if (this.studentList[i].id === id) {
+                index++;
+                newStudentList.push(this.studentList[i]);
+            }
         }
-        else {
-            console.log(`Không có mã sinh viên này`);
+        this.showStudentfound(newStudentList);
+    }
+    findByName(name) {
+        let index = -1;
+        let newStudentList = [];
+        for (let i = 0; i < this.studentList.length; i++) {
+            if (this.studentList[i].name === name) {
+                index++;
+                newStudentList.push(this.studentList[i]);
+            }
         }
+        this.showStudentfound(newStudentList);
+    }
+    showStudentfound(newStudentList) {
+        console.table(newStudentList);
     }
     showInfoStudent(i) {
-        return (`Mã sinh viên ${this.studentList[i].id},Họ và tên: ${this.studentList[i].name},Tuổi: ${this.studentList[i].age} Lớp: ${this.studentList[i].group} ,email: ${this.studentList[i].email},phone: ${this.studentList[i].phone}`);
+        console.table(this.studentList[i]);
     }
     showAllInfoStudent() {
-        return this.studentList;
+        console.table(this.studentList);
     }
     addStudent(student) {
         this.studentList.push(student);
     }
     updateInfoStudent(index, newStudent) {
         this.studentList[index] = newStudent;
+    }
+    deleteStudent(index) {
+        this.studentList.splice(index, 1);
+    }
+    sortByAge() {
+        let isOrdered;
+        for (let i = 0; i < this.studentList.length; i++) {
+            isOrdered = true;
+            for (let j = 0; j < this.studentList.length - 1 - i; j++) {
+                if (this.studentList[j].age > this.studentList[j + 1].age) {
+                    let temp = this.studentList[j];
+                    this.studentList[j] = this.studentList[j + 1];
+                    this.studentList[j + 1] = temp;
+                    isOrdered = false;
+                }
+            }
+            if (isOrdered)
+                break;
+        }
+        console.table(this.studentList);
     }
 }
 exports.StudentManagement = StudentManagement;

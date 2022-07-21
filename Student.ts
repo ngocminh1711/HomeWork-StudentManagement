@@ -7,7 +7,12 @@ export class Student {
     private _phone: number;
 
 
-    constructor(id: number, name: string, age: number, group: string, email: string, phone: number) {
+    constructor(id: number,
+                name: string,
+                age: number,
+                group: string,
+                email: string,
+                phone: number) {
         this._id = id;
         this._name = name;
         this._age = age;

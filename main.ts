@@ -2,8 +2,28 @@ import * as rl from 'readline-sync'
 import {StudentManagement} from "./StudentManagement";
 import {Student} from "./Student";
 
+enum CHOICE {
+    EXIT = 0,
+    SHOWINFO = 1,
+    CREATESTUDENT = 2,
+    UPDATESTUDEN = 3,
+    SEARCHSTUDENT = 4,
+    REMOVESTUDENT = 5,
+    SORTBYAGE = 6,
+}
+enum CHOICEOFSEARCH {
+    SEARCHBYID = 1,
+    SEARCHBYGROUP = 2,
+    SEARRCHBYNAME = 3,
+}
+enum CHOICEOFSORT {
+    LOWTOHIGH = 1,
+    HIGHTOLOW = 2,
+}
+
 let choice = -1
 let studentManagement = new StudentManagement();
+
 function inputStudent() {
     let id = +rl.question('Nhập mã sinh viên: ');
     let name = rl.question('Nhập họ và tên: ');
@@ -18,24 +38,6 @@ function addStudent() {
     let student = inputStudent();
     studentManagement.addStudent(student);
 }
-// function showInfoByID(){
-//     let id = +rl.question("Nhập id muốn tìm kiếm");
-//     let students = studentManagement.showAllInfoStudent();
-//         if (studentManagement.findID(id) != -1 ) {
-//             console.log (`${students[i].id}`)
-//         }
-
-// }
-// function findID():any{
-//     let students = studentManagement.showAllInfoStudent()
-//     let id = +rl.question('Nhập Mã sinh viên muốn tìm kiếm thông tin: ')
-//     for (let i = 0; i < students.length; i++) {
-//         if (students[i].id === id) {
-//             console.log(`Mã sinh viên: ${students[i].id}, Họ và tên: ${students[i].name}, Tuổi ${students[i].age}, Lớp ${students[i].group}, Email: ${students[i].email}, Số điện thoại: ${students[i].phone}`);
-//             break;
-//         }
-//     }
-// }
 
 
 do {
@@ -45,34 +47,63 @@ do {
     console.log('3. Thêm thông tin sinh viên ');
     console.log('4. Tìm kiếm thông tin sinh viên ')
     console.log('5. Xóa thông tin sinh viên ');
+    console.log('6. Sắp xếp thông tin sinh viên');
     console.log('0. Thoát')
     choice = +rl.question('Nhập lựa chọn: ');
 
     switch (choice) {
-        case 1:
+        case CHOICE.SHOWINFO:
             console.log('------Thông tin sinh viên--------')
-            let students = studentManagement.showAllInfoStudent()
-            for (const student of students) {
-                console.log(`Mã sinh viên ${student.id},Họ và tên: ${student.name},Tuổi: ${student.age} Lớp: ${student.group} ,email: ${student.email},phone: ${student.phone}`)
-            }
+            studentManagement.showAllInfoStudent()
             break;
-        case 2:
+        case CHOICE.CREATESTUDENT:
             console.log('------Tạo thông tin sinh viên--------')
             addStudent();
             break;
-        case 3:
+        case CHOICE.UPDATESTUDEN:
             console.log('------Tạo mới thông tin sinh viên--------')
             let index = +rl.question('Nhập vị trí sinh viên cần sửa: ');
             let newStudent = inputStudent()
             studentManagement.updateInfoStudent(index, newStudent)
 
             break;
-        case 4:
+        case CHOICE.SEARCHSTUDENT:
             console.log('------Tìm thông tin sinh viên--------')
-            studentManagement.findID(+rl.question('Nhập MSV muốn tìm kiếm ' ))
+            console.log('--Bấm 1 tìm theo ID--Bấm 2 tìm theo Lớp--Bấm 3 tìm theo tên-- ')
+            let choice = +rl.question('Mời nhập lựa chọn ')
+            switch (choice) {
+                case CHOICEOFSEARCH.SEARCHBYID:
+                    let findbyID = +rl.question('Nhập mã sinh viên muốn tìm: ');
+                    studentManagement.findByID(findbyID)
+                    break;
+                case CHOICEOFSEARCH.SEARCHBYGROUP:
+                    let findbyGroup = rl.question(' Nhập Lớp muốn tìm:  ');
+                    studentManagement.findByGroup(findbyGroup)
+                    break;
+                case CHOICEOFSEARCH.SEARRCHBYNAME:
+                    let findbyName = rl.question(' Nhập tên muốn tìm:  ');
+                    studentManagement.findByName(findbyName)
+                    break;
+            }
+
             break;
-        case 5:
-            console.log('------Thông tin sinh viên--------')
+        case CHOICE.REMOVESTUDENT:
+            console.log('------Xóa sinh viên--------')
+            let position = +rl.question('Nhập vị trí cần xóa: ')
+            studentManagement.deleteStudent(position);
+            break;
+        case CHOICE.SORTBYAGE:
+            console.log('------Sắp xếp theo độ tuổi------');
+            console.log('---Bấm 1 để sắp xếp từ thấp->cao ---Bấm 2 để sắp xếp từ cao->thấp---')
+            let choice2 = +rl.question('Mời nhập lựa chọn: ')
+            switch (choice2) {
+                case CHOICEOFSORT.LOWTOHIGH:
+                    studentManagement.sortByAge()
+                    break;
+            }
+            break;
+
+        case CHOICE.EXIT:
             break;
     }
 }
